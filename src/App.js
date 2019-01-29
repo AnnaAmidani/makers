@@ -79,7 +79,6 @@ class App extends Component {
       <button onClick={this.submitBooking}>Submit</button>
     </div>
     <div>
-    {this.state.bookings}
     </div>
 	</div>
     );
