@@ -67,10 +67,6 @@ class Availability extends Component {
 
     return (
 	<div className="App">
-	  <header className="App-header">
-	    <h4>Check Room Availability</h4>
-	  </header>
-
 		<p className="Intro"> To view availability please enter a room name alongside your preferred start and end times: </p>
     <form className="check-availability-form" onSubmit={this.submitHandler}>
       <div>
