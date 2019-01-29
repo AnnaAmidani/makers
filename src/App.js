@@ -8,20 +8,38 @@ class App extends Component {
 
 	this.state = {
     room: "",
-    start: ""
+    start: "",
+    bookings: []
 	};
 }
 
   componentDidMount() {
-	fetch('https://meetingrooms-booking.azurewebsites.net/bookings/findAll')
+	   fetch('https://meetingrooms-booking.azurewebsites.net/bookings/findAll')
 		.then(response => response.json())
 		.then(data => this.setState({ bookings: data }));
 	}
 
   submitBooking = () => {
-  fetch('https://meetingrooms-booking.azurewebsites.net/bookings/findAll')
-    .then(response => response.json())
-    .then(data => this.setState({ bookings: data }));
+
+    let to = new Date(this.state.start);
+    to.setMinutes(to.getMinutes() + 30);
+    console.log(to);
+    const data = {
+      "from": `${this.state.start.slice(0,10)}-${this.state.start.slice(11,16)}:00`,
+      "roomName": this.state.room,
+      "roomRef": "123",
+      "to": `${to.toISOString().slice(0,10)}-${to.toISOString().slice(11,16)}:00`
+    }
+    fetch('https://meetingrooms-booking.azurewebsites.net/bookings/bookARoom', {
+      method: 'POST',
+      body: JSON.stringify(data),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    .then(res => { console.log(res); res.json(); })
+    .then(response => console.log('Success:', JSON.stringify(response)))
+    .catch(error => console.error('Error:', error));
   }
 
   handleRoomChange = (event) => {
@@ -49,16 +67,19 @@ class App extends Component {
 	    <h4>Meeting rooms booking App</h4>
 	  </header>
     <div className="Booking-form">
-    <label>Select Meeting Room</label>
-    <select onChange={this.handleRoomChange} value={this.state.room}>
-    <option></option>
-      <option value="room1">Meeting Room 1</option>
-      <option value="room2">Meeting Room 2</option>
-      <option value="room3">Meeting Room 3</option>
-    </select>
-    <label>Select Time</label>
-    <input onChange={this.handleTime} value={this.state.start} type="datetime-local"/>
-    <button onClick={this.submitBooking}>Submit</button>
+      <label>Select Meeting Room</label>
+      <select onChange={this.handleRoomChange} value={this.state.room}>
+      <option></option>
+        <option value="room1">Meeting Room 1</option>
+        <option value="room2">Meeting Room 2</option>
+        <option value="room3">Meeting Room 3</option>
+      </select>
+      <label>Select date and time</label>
+      <input onChange={this.handleTime} value={this.state.start} type="datetime-local"/>
+      <button onClick={this.submitBooking}>Submit</button>
+    </div>
+    <div>
+    {this.state.bookings}
     </div>
 	</div>
     );
