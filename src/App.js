@@ -23,19 +23,33 @@ class App extends Component {
 
 	submitHandler(event) {
 		console.log(this.state)
+    fetch('https://meetingrooms-booking.azurewebsites.net/bookings/isAvailable', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        from: this.state.startTime.replace("T", "-") + ':00',
+        to: this.state.endTime.replace("T", "-") + ':00',
+        roomName: this.state.roomName,
+      }),
+    })
+  		.then(response => response.json())
+  		.then(data => console.log(data));
+
 		event.preventDefault()
 	}
 
 	handleRoomNameChange(event) {
-		this.setState({roomName: event.target.value}) 
+		this.setState({roomName: event.target.value})
 	}
 
 	handleStartTimeChange(event) {
-		this.setState({startTime: event.target.value}) 
+		this.setState({startTime: event.target.value})
 	}
 
 	handleEndTimeChange(event) {
-		this.setState({endTime: event.target.value}) 
+		this.setState({endTime: event.target.value})
 	}
 
 
@@ -82,4 +96,4 @@ export default App;
 
 
 // Click button
-// Checks the Database using a function. Expect either a true or false return. Append 
+// Checks the Database using a function. Expect either a true or false return. Append
