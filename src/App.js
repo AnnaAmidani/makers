@@ -24,19 +24,11 @@ class App extends Component {
     return (
 	<div className="App">
 	  <header className="App-header">
-	    <h4>Meeting rooms booking App</h4>
-		<img src={logo} className="App-logo" alt="logo" />
-		<p>
-			Bookings list:
-			<ul>
-				{bookings.map(booking =>
-				<li key={booking.objectID}>
-					{booking.roomName}>{booking.roomRef} - from: {booking.from} to: {booking.to}
-				</li>
-				)}
-			</ul>
-		</p>
+	    <h4>Check Room Availability</h4>
 	  </header>
+		
+		<p className="Intro"> To view availability please enter a room name alongside your preferred start and end times: </p> 
+
 	</div>
     );
   }
