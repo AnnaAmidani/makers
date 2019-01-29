@@ -14,26 +14,29 @@ class Availability extends Component {
   }
 
 	submitHandler(event) {
-		console.log(this.state)
+    console.log(this.state)
+    
+    const data = {
+      from: "2019-08-01-00:00:00",
+      roomName: "string",
+      timeFrom: "2019-08-01-00:00:00",
+      timeTo: "2019-08-01-00:00:00",
+      to: "2019-08-01-00:00:00"
+    };
+
     fetch('https://meetingrooms-booking.azurewebsites.net/bookings/isAvailable', {
       method: 'POST',
-      mode: "no-cors",
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        from: "2019-01-29T15:52:35.915Z",
-        roomName: "string",
-        timeFrom: "2019-01-29T15:52:35.915Z",
-        timeTo: "2019-01-29T15:52:35.915Z",
-        to: "2019-01-29T15:52:35.915Z"
-        }),
+      body: JSON.stringify(data)
     })
   		.then(response => {
         console.log(response)
-        // response.json()
+        
       })
   		.then(data => {
+        this.props.isAvailable()
         if (data) {
           console.log(data)
         } else {
