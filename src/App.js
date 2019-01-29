@@ -9,15 +9,21 @@ class App extends Component {
 	this.state = {
     room: "",
     start: "",
-    bookings: []
+    bookings: [],
+    bookingSuccess: null
 	};
 }
 
   componentDidMount() {
 	   fetch('https://meetingrooms-booking.azurewebsites.net/bookings/findAll')
 		.then(response => response.json())
-		.then(data => this.setState({ bookings: data }));
+		.then(data => {
+      this.setState({ bookings: data })
+      console.log(data)
+    });
 	}
+
+
 
   submitBooking = () => {
 
@@ -37,7 +43,16 @@ class App extends Component {
         'Content-Type': 'application/json'
       }
     })
-    .then(res => { console.log(res); res.json(); })
+    .then(res => {
+      console.log(res.status);
+      if (res.status === 201) {
+        this.setState({bookingSuccess: true})
+      }
+
+      if (res.status === 400) {
+        this.setState({bookingSuccess: false})
+      }
+    })
     .then(response => console.log('Success:', JSON.stringify(response)))
     .catch(error => console.error('Error:', error));
   }
@@ -60,7 +75,7 @@ class App extends Component {
 
   render() {
 	const { bookings } = this.state;
-
+  
     return (
 	<div className="App">
 	  <header className="App-header">
@@ -79,7 +94,7 @@ class App extends Component {
       <button onClick={this.submitBooking}>Submit</button>
     </div>
     <div>
-    {this.state.bookings}
+    {this.state.bookingSuccess ? <p> You have successfully booked a room.</p> : "" }
     </div>
 	</div>
     );
