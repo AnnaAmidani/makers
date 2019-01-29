@@ -17,19 +17,25 @@ class Availability extends Component {
 		console.log(this.state)
     fetch('https://meetingrooms-booking.azurewebsites.net/bookings/isAvailable', {
       method: 'POST',
+      mode: "no-cors",
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        from: this.state.startTime.replace("T", "-") + ':00',
-        to: this.state.endTime.replace("T", "-") + ':00',
-        roomName: this.state.roomName,
-      }),
+        from: "2019-01-29T15:52:35.915Z",
+        roomName: "string",
+        timeFrom: "2019-01-29T15:52:35.915Z",
+        timeTo: "2019-01-29T15:52:35.915Z",
+        to: "2019-01-29T15:52:35.915Z"
+        }),
     })
-  		.then(response => response.json())
+  		.then(response => {
+        console.log(response)
+        // response.json()
+      })
   		.then(data => {
         if (data) {
-
+          console.log(data)
         } else {
           this.setState({errorMessage: 'This room is not available for the times selected'});
         }
@@ -66,17 +72,17 @@ class Availability extends Component {
     <form className="check-availability-form" onSubmit={this.submitHandler}>
       <div>
         <label htmlFor="room-name">Room name: </label>
-        <input type="text" name="room-name" placeholder="e.g. G05" onChange={this.handleRoomNameChange} required></input>
+        <input type="text" name="room-name" placeholder="e.g. G05" onChange={this.handleRoomNameChange}></input>
       </div>
 
       <div>
         <label htmlFor="start-time">Start of booking: </label>
-        <input type="datetime-local" name="start-time" onChange={this.handleStartTimeChange} required></input>
+        <input type="datetime-local" name="start-time" onChange={this.handleStartTimeChange}></input>
       </div>
 
       <div>
         <label htmlFor="room-name">End of booking: </label>
-        <input type="datetime-local" name="end-time"onChange={this.handleEndTimeChange} required></input>
+        <input type="datetime-local" name="end-time"onChange={this.handleEndTimeChange}></input>
       </div>
 
       <div>
