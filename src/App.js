@@ -8,9 +8,8 @@ class App extends Component {
     super(props);
 
   	this.state = {
-      room: "",
-      start: "",
-      bookings: []
+      room: "room1",
+      start: "2019-01-17T10:30"
   	};
   }
 
@@ -26,10 +25,7 @@ class App extends Component {
     	  <header className="App-header">
     	    <h4>Meeting rooms booking App</h4>
     	  </header>
-        <BookingForm room={this.state.room}/>
-
-        <button onClick={()=>{this.setState({ room: 'room2'})}}>Set room 2</button>
-                <button onClick={()=>{this.setState({ room: 'room3'})}}>Set room 3</button>
+        <BookingForm room={this.state.room} start={this.state.start}/>
     	</div>
     );
   }

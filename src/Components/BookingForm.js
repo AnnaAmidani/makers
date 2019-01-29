@@ -7,7 +7,8 @@ class BookingForm extends PureComponent {
 
   	this.state = {
       room: this.props.room || '',
-      start: this.props.start || ''
+      start: this.props.start || '',
+      bookingSuccess: null
   	};
   }
 
@@ -18,6 +19,9 @@ class BookingForm extends PureComponent {
   componentWillReceiveProps(nextProps) {
     if (nextProps.room && nextProps.room !== this.state.room) {
       this.setState({room: nextProps.room});
+    }
+    if (nextProps.start && nextProps.start !== this.state.start) {
+      this.setState({start: nextProps.start});
     }
   }
 
@@ -38,7 +42,19 @@ class BookingForm extends PureComponent {
       headers: {
         'Content-Type': 'application/json'
       }
-    });
+    })
+    .then(res => {
+      console.log(res.status);
+      if (res.status === 201) {
+        this.setState({bookingSuccess: true})
+      }
+
+      if (res.status === 400) {
+        this.setState({bookingSuccess: false})
+      }
+    })
+    .then(response => console.log('Success:', JSON.stringify(response)))
+    .catch(error => console.error('Error:', error));
   }
 
   handleRoomChange = (event) => {
@@ -50,6 +66,7 @@ class BookingForm extends PureComponent {
   }
 
   handleTime = (event) => {
+    console.log(event.target.value);
     this.setState(
       {
         start: event.target.value
@@ -72,6 +89,10 @@ class BookingForm extends PureComponent {
       <label>Select date and time</label>
       <input onChange={this.handleTime} value={this.state.start} type="datetime-local"/>
       <button onClick={this.submitBooking}>Submit</button>
+
+      <div>
+      {this.state.bookingSuccess ? <p> You have successfully booked a room.</p> : "" }
+      </div>
     </div>
     );
   }
